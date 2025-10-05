@@ -41,10 +41,7 @@ class MainActivity : ComponentActivity() {
 fun XMLWithLogicContent(modifier: Modifier = Modifier) {
     AndroidView(
         factory = { context ->
-            // Загружаем ваш существующий XML
             val view = android.view.LayoutInflater.from(context).inflate(R.layout.main, null)
-
-            // Находим элементы по ID
             val textView = view.findViewById<TextView>(R.id.textView)
             val button = view.findViewById<Button>(R.id.button)
             val textView2 = view.findViewById<TextView>(R.id.textView2)
