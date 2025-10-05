@@ -52,7 +52,6 @@ fun XMLWithLogicContent(modifier: Modifier = Modifier) {
             val textView4 = view.findViewById<TextView>(R.id.textView4)
             val imageButton1 = view.findViewById<ImageButton>(R.id.imageButton)
             val radioGroup = view.findViewById<RadioGroup>(R.id.RadioGroup)
-            // Устанавливаем начальные значения
             textView4.text = "0"
             textView.text = "Hello from XML!"
             textView2.text = "Waiting for click..."
@@ -78,22 +77,19 @@ fun XMLWithLogicContent(modifier: Modifier = Modifier) {
                         .show()
                 }
             }
-
-
-            // ПРАВИЛЬНО:
             Thread {
                 val handler = android.os.Handler(context.mainLooper)
                 var text = 0
 
                 for (i in 1..10) {
-                    Thread.sleep(3000) // Теперь это в фоновом потоке
+                    Thread.sleep(3000) 
                     text = i
 
                     handler.post {
                         textView3.text = "$text"
                     }
                 }
-            }.start() // Не забыть запустить поток!
+            }.start() 
             var click2 = 0;
             imageButton1.setOnClickListener{
                 click2++
@@ -108,25 +104,15 @@ fun XMLWithLogicContent(modifier: Modifier = Modifier) {
             var clickCount = 0
             button.setOnClickListener {
                 clickCount++
-
-                // Меняем текст первого TextView
                 textView.text = "Button clicked!"
-
-                // Обновляем второй TextView с счетчиком
                 textView2.text = "Clicked $clickCount times"
-
-                // Показываем Toast
                 Toast.makeText(context, "Click count: $clickCount", Toast.LENGTH_SHORT).show()
-
-                // Меняем цвет текста при каждом клике
                 when (clickCount % 3) {
                     0 -> textView.setTextColor(android.graphics.Color.BLACK)
                     1 -> textView.setTextColor(android.graphics.Color.RED)
                     2 -> textView.setTextColor(android.graphics.Color.BLUE)
                 }
             }
-
-            // Дополнительная логика - долгое нажатие
             button.setOnLongClickListener {
                 textView.text = "Long press detected!"
                 textView2.text = "Reset counter"
