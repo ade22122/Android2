@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -53,8 +54,30 @@ fun XMLWithLogicContent(modifier: Modifier = Modifier) {
             textView.text = "Hello from XML!"
             textView2.text = "Waiting for click..."
             textView3.text = "0"
+            val imageView = view.findViewById<ImageView>(R.id.imageView2)
 
+            val images = listOf(
+                android.R.drawable.ic_dialog_alert,
+                android.R.drawable.ic_dialog_info,
+                android.R.drawable.ic_dialog_email
+            )
 
+            var currentImage = 0
+
+            fun updateImage() {
+                imageView.setImageResource(images[currentImage])
+            }
+            val handler = android.os.Handler()
+            val runnable = object : Runnable {
+                override fun run() {
+                    currentImage = (currentImage + 1) % images.size
+                    updateImage()
+                    handler.postDelayed(this, 3000)
+                }
+            }
+            handler.postDelayed(runnable, 3000)
+            updateImage()
+            view
             radioGroup.setOnCheckedChangeListener { group, checkedId ->
                 val message = when (checkedId) {
                     R.id.radioButton -> "ГЕЙ - это неправильный ответ!\nСВЕГ означает что-то другое"
@@ -74,19 +97,20 @@ fun XMLWithLogicContent(modifier: Modifier = Modifier) {
                         .show()
                 }
             }
+
             Thread {
                 val handler = android.os.Handler(context.mainLooper)
                 var text = 0
 
                 for (i in 1..10) {
-                    Thread.sleep(3000) 
+                    Thread.sleep(3000)
                     text = i
 
                     handler.post {
                         textView3.text = "$text"
                     }
                 }
-            }.start() 
+            }.start()
             var click2 = 0;
             imageButton1.setOnClickListener{
                 click2++
@@ -97,7 +121,6 @@ fun XMLWithLogicContent(modifier: Modifier = Modifier) {
                     2 -> textView4.setTextColor(android.graphics.Color.BLUE)
                 }
             }
-            // Логика для кнопки
             var clickCount = 0
             button.setOnClickListener {
                 clickCount++
